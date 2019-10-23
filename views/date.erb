@@ -1,0 +1,33 @@
+<div>
+  <h2>Tasks Completed For Date: <%= @formatted_date %></h2>
+  <div class='content'>
+    <ul>
+      <% @tasks.uniq { |t| t[:task_name] }.each do |task| %>
+        <li>
+          <h3 class='task_header'><%= task[:task_name] %></h3>
+          <ul class='task_list'>
+            <% @tasks.each do |task_details| %>
+              <% if task_details[:task_name] == task[:task_name] %>
+                <li>
+                  <span class='task_details'>Start: <%= task_details[:start_at] %></span>
+                  <span class='task_details'>End: <%= task_details[:end_at] %></span>
+                  <span class='task_details'>Total: <%= task_details[:total_time] %></span>
+                </li>
+              <% end %>  
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+    <ul class='task_list'>
+      <li class='total'>
+        <h3>Total Time:</h3>
+        <p><%= @total_time_today %></p>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class='links'>
+  <p><a href='/timer'>Home</a></p>
+  <p><a href='/timer/history'>History</a></p>
+</div>

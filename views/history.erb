@@ -1,0 +1,62 @@
+<div>
+  <h2>Tasks Completed For Today: <%= @current_date %></h2>
+  <div class='content'>
+    <ul>
+      <% if @tasks_today.nil? %>
+        <li>
+          <h3 class='task_header'>There are no tasks completed today.</h3>
+        </li>
+      <% else %>
+        <% @tasks_today.uniq { |t| t[:task_name] }.each do |task| %>
+          <li>
+            <h3 class='task_header'><%= task[:task_name] %></h3>
+            <ul class='task_list'>
+              <% @tasks_today.each do |task_details| %>
+                <% if task_details[:task_name] == task[:task_name] %>
+                  <li>
+                    <span class='task_details'>Start: <%= task_details[:start_at] %></span>
+                    <span class='task_details'>End: <%= task_details[:end_at] %></span>
+                    <span class='task_details'>Total: <%= task_details[:total_time] %></span>
+                  </li>
+                <% end %>  
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+    <% unless @tasks_today.nil? %>
+      <ul class='task_list'>
+        <li class='total'>
+          <h3>Total Time:</h3>
+          <p><%= @total_time_today %></p>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+  <h2>Tasks Completed Over Last 7 Days</h2>
+  <div class='content'>
+    <ul class='task_list'>
+      <% if @tasks_last_seven_days.nil? %>
+        <li>
+          <h3>There are no tasks completed over the last seven days.</h3>
+        </li>
+      <% else %>
+        <% @tasks_last_seven_days.each do |task| %>
+          <li>
+            <p class='task_date'><a href='/timer/<%= task[:date_stamp] %>'><%= task[:task_date] %></a></p>
+            <p class='task_time'><%= task[:total_time] %></p>
+          </li>
+        <% end %>
+        <li class='total'>
+          <h3>Total Time:</h3>
+          <p><%= @total_time %></p>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class='links'>
+  <p><a href='/timer'>Home</a></p>
+</div>

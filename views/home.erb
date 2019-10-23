@@ -1,0 +1,30 @@
+<div>
+  <form action="/task/add" method="post">
+    <label for="new_task">Add a new task:</label>
+    <input type="text" name="new_task" placeholder="New Task">
+    <input type="submit" value="Submit">
+  </form>
+</div>
+<br>
+<div>
+  <form action="/start_time" method="post">
+    <% if @tasks.ntuples > 0 %>
+      <label for="task_name">Please select a task from the list.</label>
+      <select name="task_name">
+        <% @tasks.each do |task| %>
+          <option value="<%= task["name"] %>"><%= task["name"] %></option>
+        <% end %>
+      </select>
+    <% end %>
+    <br>
+    <input type="submit" value="Start Time">
+  </form>
+
+  <form action="/end_time" method="post">
+    <input type="submit" value="End Time">
+  </form>
+</div>
+
+<div class='links'>
+  <p><a href='/timer/history'>History</a></p>
+</div>

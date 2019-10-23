@@ -1,0 +1,119 @@
+a {
+  color: inherit;
+  text-decoration: none; 
+}
+
+body {
+  font: normal 20px "PT Sans", Helvetica, Arial, sans-serif;
+  color: #3f3f3f;
+  background: #ffffff; 
+}
+
+body > header {
+  max-width: 1000px;
+  padding: 85px 0 35px 0;
+  margin: 0 auto; 
+}
+
+body > header h1 {
+  display: inline-block;
+  width: 38%;
+  font-size: 30px;
+  color: #333333; 
+}
+
+main {
+  max-width: 1000px;
+  padding: 0 0 40px 0;
+  margin: 0 auto; 
+}
+
+main > form {
+  margin-top: 1.5em; 
+}
+
+form input[type="text"] {
+  width: 100%;
+  height: 58px;
+  padding: 15px 20px;
+  font: normal 20px "PT Sans", Helvetica, Arial, sans-serif;
+  border: 1px solid #a4a4a4;
+  border-radius: 8px;
+  box-sizing: border-box; 
+}
+
+form input[type="submit"] {
+  padding: 12px 30px;
+  width: 180px;
+  margin: 10px 0 0 0;
+  font: normal 24px "PT Sans", Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  background: #dd5f4f;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-transition: background-color 200ms ease;
+  -moz-transition: background-color 200ms ease;
+  -o-transition: background-color 200ms ease; 
+}
+
+form select {
+  padding: 3px 20px;
+  margin: 10px 0 0 0;
+  font: normal 24px "PT Sans", Helvetica, Arial, sans-serif;
+  color: #333333;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background: #d9d9d9;
+}
+
+form input[type="submit"]:hover {
+  background-color: #d13b28;
+  cursor: pointer; 
+}
+
+.flash {
+  max-width: 960px;
+  padding: 10px 20px;
+  margin: 20px auto 1.5em auto;
+  color: #3399cc;
+  background: #CBE5F2; 
+}
+
+.flash p {
+  font-size: 14px;
+  font-weight: bold; 
+}
+
+.flash.error {
+  color: #ff6633;
+  background: #FFCFBF; 
+}
+
+.flash.success {
+  color: #33cc99;
+  background: #CBF2E5; 
+}
+
+.links {
+  margin: 30px 0 0 0;
+}
+
+.content {
+  border: 1px solid #d9d9d9;
+  margin: 5px 0;
+}
+
+.task_list, .task_header {
+  margin: 10px 20px;
+}
+
+.task_list li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.total {
+  border-top: 2px solid black; 
+}
