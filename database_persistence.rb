@@ -126,7 +126,7 @@ class DatabasePersistence
         FROM timetable
         WHERE start_at::date BETWEEN CURRENT_DATE - 7 AND CURRENT_DATE
         GROUP BY task_date, date_stamp
-        ORDER BY task_date ASC;
+        ORDER BY task_date DESC;
     SQL
     
     result = query(sql)
@@ -174,27 +174,25 @@ class DatabasePersistence
     result.ntuples > 0
   end
   
+  def exists_sample_data?
+    result = query('SELECT 1 FROM timetable;')
+    result.ntuples > 0
+  end
+  
+  def populate_data    
+    sql_file_tasks = File.open('schema_tasks.sql') { |file| file.read }
+    query(sql_file_tasks)
+    
+    sql_file_timetable = File.open('schema_timetable.sql') { |file| file.read }
+    query(sql_file_timetable)
+  end
+  
+  def delete_data
+    query('DELETE FROM timetable;')
+    query('DELETE FROM tasks;')
+  end
+  
   def disconnect
     @db.close
-  end
-  
-  # Methods for populating sample data only
-  def no_new_data?
-    sql = <<~SQL
-      SELECT 1 FROM timetable
-        WHERE start_at::date BETWEEN CURRENT_DATE -7 AND CURRENT_DATE;
-    SQL
-    
-    result = query(sql)
-    result.ntuples.zero?
-  end
-  
-  def remove_unfinished_tasks
-    query('DELETE FROM timetable WHERE duration IS NULL;')
-  end
-  
-  def add_sample_data
-    sql_file = File.open('schema.sql') { |file| file.read }
-    query(sql_file)
   end
 end

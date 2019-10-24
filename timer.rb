@@ -16,12 +16,6 @@ end
 
 before do
   @storage = DatabasePersistence.new(logger)
-  
-  # Methods for populating sample data
-  if @storage.no_new_data?
-    @storage.remove_unfinished_tasks
-    @storage.add_sample_data
-  end
 end
 
 after do
@@ -90,6 +84,22 @@ get '/timer/:date_stamp' do
   @tasks = @storage.tasks_completed_for_date(date_stamp)
   
   erb :date, layout: :layout
+end
+
+post '/create_sample_data' do
+  if @storage.exists_sample_data?
+    session[:error] = 'Please delete old sample data before populating new sample data.'
+  else
+    @storage.populate_data
+    session[:success] = 'New sample data has been populated.'
+  end
+  redirect '/'
+end
+
+post '/delete_all_data' do
+  @storage.delete_data
+  session[:success] = 'All data has been removed from the database.'
+  redirect '/'
 end
 
 not_found do

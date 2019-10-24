@@ -42,7 +42,7 @@ form input[type="text"] {
   box-sizing: border-box; 
 }
 
-form input[type="submit"] {
+input[type="submit"] {
   padding: 12px 30px;
   width: 180px;
   margin: 10px 0 0 0;
@@ -71,6 +71,11 @@ form select {
 form input[type="submit"]:hover {
   background-color: #d13b28;
   cursor: pointer; 
+}
+
+input[type="submit"]:disabled {
+  color: #8c8c8c;
+  background: #cccccc;
 }
 
 .flash {
@@ -116,4 +121,14 @@ form input[type="submit"]:hover {
 
 .total {
   border-top: 2px solid black; 
+}
+
+.utility {
+  text-align: center;
+}
+
+.utility form input[type="submit"] {
+  display: inline-block;
+  padding: 3px 5px;
+  width: 250px;
 }

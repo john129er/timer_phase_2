@@ -7,24 +7,43 @@
 </div>
 <br>
 <div>
-  <form action="/start_time" method="post">
-    <% if @tasks.ntuples > 0 %>
+  <% if @tasks.ntuples > 0 %>
+    <form action="/start_time" method="post">
       <label for="task_name">Please select a task from the list.</label>
       <select name="task_name">
         <% @tasks.each do |task| %>
           <option value="<%= task["name"] %>"><%= task["name"] %></option>
         <% end %>
       </select>
-    <% end %>
-    <br>
-    <input type="submit" value="Start Time">
-  </form>
-
-  <form action="/end_time" method="post">
-    <input type="submit" value="End Time">
-  </form>
+      <br>
+      <input type="submit" value="Start Time">
+    </form>
+    
+    <form action="/end_time" method="post">
+      <input type="submit" value="End Time">
+    </form>
+  
+  <% else %>
+    <p>No tasks found. Please submit a new task to populate the task list.</p>
+    <div>
+      <input disabled type="submit" value="Start Time">
+    </div>
+    <div>
+      <input disabled type="submit" value="End Time">
+    </div>
+  <% end %>
 </div>
 
-<div class='links'>
+<div class="links">
   <p><a href='/timer/history'>History</a></p>
+</div>
+
+<div class="utility">
+  <form action="/create_sample_data" method="post">
+    <input type="submit" value="Create Sample Data">
+  </form>
+  
+  <form action="/delete_all_data" method="post">
+    <input type="submit" value="Delete All Data">
+  </form>
 </div>
