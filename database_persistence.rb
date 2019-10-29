@@ -26,9 +26,7 @@ class DatabasePersistence
     
     result = query(sql)
     
-    if result.ntuples > 0
-      sql_to_hash(result).first
-    end
+    sql_to_hash(result).first if result.ntuples > 0
   end
   
   def all_tasks
