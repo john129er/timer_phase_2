@@ -27,10 +27,14 @@ class DatabasePersistence
     result = query(sql)
     
     if result.ntuples > 0
-      result.map do |tuple|
-        { task_name: tuple['task_name'] }
-      end.first
+      sql_to_hash(result).first
     end
+  end
+  
+  def all_tasks
+    result = query('SELECT name AS task_name FROM tasks;')
+    
+    sql_to_hash(result) if result.ntuples > 0
   end
 
   def timer_start(task_name)
@@ -95,17 +99,7 @@ class DatabasePersistence
     
     result = query(sql, date)
     
-    if result.ntuples > 0
-      result.map do |tuple|
-        {
-          task_name: tuple['task_name'],
-          start_at: tuple['start_at'],
-          end_at: tuple['end_at'],
-          total_time: tuple['duration'],
-          task_date: tuple['task_date']
-        }
-      end
-    end
+    sql_to_hash(result) if result.ntuples > 0
   end
   
   def total_time_tasks_for_date(date)
@@ -121,7 +115,7 @@ class DatabasePersistence
   def tasks_last_seven_days
     sql = <<~SQL
       SELECT TO_CHAR(start_at::date, 'Mon DD') AS task_date,
-             TO_CHAR(SUM(duration), 'HH24:MI') AS total_time,
+             TO_CHAR(SUM(duration), 'HH24:MI') AS duration,
              start_at::date AS date_stamp
         FROM timetable
         WHERE start_at::date BETWEEN CURRENT_DATE - 7 AND CURRENT_DATE
@@ -131,15 +125,7 @@ class DatabasePersistence
     
     result = query(sql)
     
-    if result.ntuples > 0
-      result.map do |tuple|
-        {
-          task_date: tuple['task_date'],
-          total_time: tuple['total_time'],
-          date_stamp: tuple['date_stamp']
-        }
-      end
-    end
+    sql_to_hash(result) if result.ntuples > 0
   end
   
   def total_time_last_seven_days
@@ -194,5 +180,19 @@ class DatabasePersistence
   
   def disconnect
     @db.close
+  end
+  
+  private
+  
+  def sql_to_hash(result)    
+    result.map do |tuple|
+      {
+        task_name: tuple['task_name'],
+        start_at: tuple['start_at'],
+        end_at: tuple['end_at'],
+        total_time: tuple['duration'],
+        task_date: tuple['task_date']
+      }
+    end
   end
 end

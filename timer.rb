@@ -11,7 +11,15 @@ end
 
 configure do
   enable :sessions
-  set :erb, :escape_html => true
+  set :erb, :escape_html => true   
+end
+
+def error_for_task_name(task_name)
+  if !(1..30).cover?(task_name.size)
+    'List name must be between 1 and 100 characters.'
+  elsif @storage.all_tasks.any? { |task| task[:task_name] == task_name }
+    'Task name must be unique.'
+  end
 end
 
 before do
@@ -60,9 +68,18 @@ post '/end_time' do
 end
 
 post '/task/add' do
-  new_task = params[:new_task]
-  @storage.add_task(new_task)
-  redirect '/timer'
+  task_name = params[:task_name].strip
+
+  error = error_for_task_name(task_name)
+  if error
+    session[:error] = error
+    @tasks = @storage.load_tasks
+    erb :home, layout: :layout
+  else
+    @storage.add_task(task_name)
+    session[:success] = "Task #{task_name} was added successfully."
+    redirect '/timer'
+  end
 end
 
 get '/timer/history' do
@@ -78,7 +95,7 @@ end
 
 get '/timer/:date_stamp' do
   date_stamp = params[:date_stamp]
-  redirect '/' unless @storage.data_for_date?(date_stamp)
+  redirect '/timer' unless @storage.data_for_date?(date_stamp)
   
   @formatted_date = @storage.format_date(date_stamp)
   @tasks = @storage.tasks_completed_for_date(date_stamp)
@@ -93,15 +110,15 @@ post '/create_sample_data' do
     @storage.populate_data
     session[:success] = 'New sample data has been populated.'
   end
-  redirect '/'
+  redirect '/timer'
 end
 
 post '/delete_all_data' do
   @storage.delete_data
   session[:success] = 'All data has been removed from the database.'
-  redirect '/'
+  redirect '/timer'
 end
 
 not_found do
-  redirect '/'
+  redirect '/timer'
 end
