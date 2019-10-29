@@ -99,6 +99,7 @@ get '/timer/:date_stamp' do
   
   @formatted_date = @storage.format_date(date_stamp)
   @tasks = @storage.tasks_completed_for_date(date_stamp)
+  @total_time = @storage.total_time_tasks_for_date(date_stamp)
   
   erb :date, layout: :layout
 end

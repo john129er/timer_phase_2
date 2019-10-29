@@ -112,13 +112,13 @@ class DatabasePersistence
   
   def tasks_last_seven_days
     sql = <<~SQL
-      SELECT TO_CHAR(start_at::date, 'Mon DD') AS task_date,
+      SELECT TO_CHAR(start_at::date, 'Mon DD') AS date_stamp,
              TO_CHAR(SUM(duration), 'HH24:MI') AS duration,
-             start_at::date AS date_stamp
+             start_at::date AS task_date
         FROM timetable
         WHERE start_at::date BETWEEN CURRENT_DATE - 7 AND CURRENT_DATE
-        GROUP BY task_date, date_stamp
-        ORDER BY task_date DESC;
+        GROUP BY date_stamp, task_date
+        ORDER BY date_stamp DESC;
     SQL
     
     result = query(sql)
@@ -189,7 +189,8 @@ class DatabasePersistence
         start_at: tuple['start_at'],
         end_at: tuple['end_at'],
         total_time: tuple['duration'],
-        task_date: tuple['task_date']
+        task_date: tuple['task_date'],
+        date_stamp: tuple['date_stamp']
       }
     end
   end

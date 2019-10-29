@@ -44,7 +44,7 @@
       <% else %>
         <% @tasks_last_seven_days.each do |task| %>
           <li>
-            <p class='task_date'><a href='/timer/<%= task[:date_stamp] %>'><%= task[:task_date] %></a></p>
+            <p class='task_date'><a href='/timer/<%= task[:task_date] %>'><%= task[:date_stamp] %></a></p>
             <p class='task_time'><%= task[:total_time] %></p>
           </li>
         <% end %>
