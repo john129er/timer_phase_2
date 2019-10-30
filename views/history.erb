@@ -2,7 +2,7 @@
   <h2>Tasks Completed For Today: <%= @current_date %></h2>
   <div class='content'>
     <ul>
-      <% if @tasks_today.nil? %>
+      <% if @tasks_today.empty? %>
         <li>
           <h3 class='task_header'>There are no tasks completed today.</h3>
         </li>
@@ -37,7 +37,7 @@
   <h2>Tasks Completed Over Last 7 Days</h2>
   <div class='content'>
     <ul class='task_list'>
-      <% if @tasks_last_seven_days.nil? %>
+      <% if @tasks_last_seven_days.size.zero? %>
         <li>
           <h3>There are no tasks completed over the last seven days.</h3>
         </li>

@@ -17,7 +17,7 @@ end
 def error_for_task_name(task_name)
   if !(1..30).cover?(task_name.size)
     'List name must be between 1 and 100 characters.'
-  elsif @storage.all_tasks.any? { |task| task[:task_name] == task_name }
+  elsif @storage.all_tasks.any? { |task| task[:name] == task_name }
     'Task name must be unique.'
   end
 end
@@ -35,7 +35,7 @@ get '/' do
 end
 
 get '/timer' do
-  @tasks = @storage.load_tasks
+  @tasks = @storage.all_tasks
   erb :home, layout: :layout
 end
 
@@ -47,7 +47,7 @@ post '/start_time' do
     session[:success] = "The timer has started for task: #{task_name}."
     redirect '/timer'
   else
-    @tasks = @storage.load_tasks
+    @tasks = @storage.all_tasks
     session[:error] = 'Please end the current task before starting another.'
     erb :home, layout: :layout
   end
@@ -62,7 +62,7 @@ post '/end_time' do
     redirect '/timer'
   else
     session[:error] = 'Please begin a task before clicking End Time.'
-    @tasks = @storage.load_tasks
+    @tasks = @storage.all_tasks
     erb :home, layout: :layout
   end
 end
@@ -73,7 +73,7 @@ post '/task/add' do
   error = error_for_task_name(task_name)
   if error
     session[:error] = error
-    @tasks = @storage.load_tasks
+    @tasks = @storage.all_tasks
     erb :home, layout: :layout
   else
     @storage.add_task(task_name)
@@ -85,10 +85,10 @@ end
 get '/timer/history' do
   @tasks_today = @storage.tasks_completed_for_date('today')
   @current_date = @storage.format_date('today')
-  @total_time_today = @storage.total_time_tasks_for_date('today') unless @tasks_today.nil?
+  @total_time_today = @storage.total_time_tasks_for_date('today') unless @tasks_today.empty?
   
   @tasks_last_seven_days = @storage.tasks_last_seven_days
-  @total_time = @storage.total_time_last_seven_days unless @tasks_last_seven_days.nil?
+  @total_time = @storage.total_time_last_seven_days unless @tasks_last_seven_days.empty?
   
   erb :history, layout: :layout
 end

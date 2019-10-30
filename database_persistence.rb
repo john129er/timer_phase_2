@@ -1,4 +1,5 @@
 require 'pg'
+require 'pry'
 
 class DatabasePersistence
   def initialize(logger)
@@ -25,14 +26,12 @@ class DatabasePersistence
     SQL
     
     result = query(sql)
-    
-    sql_to_hash(result).first if result.ntuples > 0
+    tuple_to_hash(result).first
   end
   
   def all_tasks
-    result = query('SELECT name AS task_name FROM tasks;')
-    
-    sql_to_hash(result) if result.ntuples > 0
+    result = query('SELECT name FROM tasks;')
+    result.map { |tuple| { name: tuple['name'] } }
   end
 
   def timer_start(task_name)
@@ -65,10 +64,6 @@ class DatabasePersistence
     query(sql)
   end
   
-  def load_tasks
-    query('SELECT name FROM tasks;')
-  end
-  
   def add_task(task_name)
     query('INSERT INTO tasks (name) VALUES ($1)', task_name)
   end
@@ -97,7 +92,7 @@ class DatabasePersistence
     
     result = query(sql, date)
     
-    sql_to_hash(result) if result.ntuples > 0
+    tuple_to_hash(result)
   end
   
   def total_time_tasks_for_date(date)
@@ -123,7 +118,7 @@ class DatabasePersistence
     
     result = query(sql)
     
-    sql_to_hash(result) if result.ntuples > 0
+    tuple_to_hash(result)
   end
   
   def total_time_last_seven_days
@@ -182,7 +177,7 @@ class DatabasePersistence
   
   private
   
-  def sql_to_hash(result)    
+  def tuple_to_hash(result)    
     result.map do |tuple|
       {
         task_name: tuple['task_name'],

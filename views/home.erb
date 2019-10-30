@@ -7,12 +7,12 @@
 </div>
 <br>
 <div>
-  <% if @tasks.ntuples > 0 %>
+  <% if @tasks.size > 0 %>
     <form action="/start_time" method="post">
       <label for="task_name">Please select a task from the list.</label>
       <select name="task_name">
         <% @tasks.each do |task| %>
-          <option value="<%= task["name"] %>"><%= task["name"] %></option>
+          <option value="<%= task[:name] %>"><%= task[:name] %></option>
         <% end %>
       </select>
       <br>
